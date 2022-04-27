@@ -125,7 +125,7 @@ namespace AbstractShipyardListImplement.Implements
                 ProductName = productName,
                 Count = order.Count,
                 Sum = order.Sum,
-                Status = order.Status,
+                Status = order.Status.ToString(),
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement
             };

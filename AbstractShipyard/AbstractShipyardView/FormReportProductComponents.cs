@@ -15,7 +15,7 @@ namespace AbstractShipyardView
             _logic = logic;
         }
 
-       private void FormReportProductComponents_Load(object sender, EventArgs e)
+        private void FormReportTravelConditions_Load(object sender, EventArgs e)
         {
             try
             {
@@ -25,27 +25,25 @@ namespace AbstractShipyardView
                     dataGridView.Rows.Clear();
                     foreach (var elem in dict)
                     {
-                        dataGridView.Rows.Add(new object[] { elem.ComponentName, "", ""
-});
-                        foreach (var listElem in elem.Products)
+                        dataGridView.Rows.Add(new object[] { elem.ProductName, "", "" });
+
+                        foreach (var listElem in elem.Components)
                         {
-                            dataGridView.Rows.Add(new object[] { "", listElem.Item1,
-listElem.Item2 });
+                            dataGridView.Rows.Add(new object[] { "", listElem.Item1, listElem.Item2 });
                         }
-                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount
-});
+                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
+
                         dataGridView.Rows.Add(Array.Empty<object>());
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void ButtonSaveToExcel_Click(object sender, EventArgs e)
+        private void buttonSaveToExcel_Click(object sender, EventArgs e)
         {
             using var dialog = new SaveFileDialog { Filter = "xlsx|*.xlsx" };
             if (dialog.ShowDialog() == DialogResult.OK)

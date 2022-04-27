@@ -1,9 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using AbstractShipyardBusinessLogic.BusinessLogics;
 using AbstractShipyardContracts.BusinessLogicsContracts;
 using AbstractShipyardContracts.StoragesContracts;
 using AbstractShipyardDatabaseImplement.Implements;
-using System;
-using System.Windows.Forms;
+using AbstractShipyardBusinessLogic.OfficePackage;
+using AbstractShipyardBusinessLogic.OfficePackage.Implements;
 using Unity;
 using Unity.Lifetime;
 
@@ -40,8 +45,7 @@ namespace AbstractShipyardView
             var currentContainer = new UnityContainer();
             currentContainer.RegisterType<IComponentStorage,
             ComponentStorage>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IOrderStorage, OrderStorage>(new
-            HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IOrderStorage, OrderStorage>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IProductStorage, ProductStorage>(new
             HierarchicalLifetimeManager());
             currentContainer.RegisterType<IComponentLogic, ComponentLogic>(new
@@ -50,6 +54,14 @@ namespace AbstractShipyardView
             HierarchicalLifetimeManager());
             currentContainer.RegisterType<IProductLogic, ProductLogic>(new
             HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IReportLogic, ReportLogic>(new HierarchicalLifetimeManager());
+
+            currentContainer.RegisterType<AbstractSaveToWord, SaveToWord>(new HierarchicalLifetimeManager());
+
+            currentContainer.RegisterType<AbstractSaveToExcel, SaveToExcel>(new HierarchicalLifetimeManager());
+
+            currentContainer.RegisterType<AbstractSaveToPdf, SaveToPdf>(new HierarchicalLifetimeManager());
+
             return currentContainer;
         }
     }

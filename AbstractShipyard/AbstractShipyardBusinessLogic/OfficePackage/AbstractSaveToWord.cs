@@ -10,22 +10,23 @@ namespace AbstractShipyardBusinessLogic.OfficePackage
         public void CreateDoc(WordInfo info)
         {
             CreateWord(info);
+
             CreateParagraph(new WordParagraph
             {
-                Texts = new List<(string, WordTextProperties)> { (info.Title, new
-WordTextProperties { Bold = true, Size = "24", }) },
+                Texts = new List<(string, WordTextProperties)> { (info.Title, new WordTextProperties { Bold = true, Size = "24", }) },
                 TextProperties = new WordTextProperties
                 {
                     Size = "24",
                     JustificationType = WordJustificationType.Center
                 }
             });
-            foreach (var component in info.Components)
+
+            foreach (var product in info.Products)
             {
                 CreateParagraph(new WordParagraph
                 {
-                    Texts = new List<(string, WordTextProperties)> {
-(component.ComponentName, new WordTextProperties { Size = "24", }) },
+                    Texts = new List<(string, WordTextProperties)> {(product.ProductName, new WordTextProperties{Bold = true, Size = "24", }),
+                        (" Цена: " + product.Price.ToString(), new WordTextProperties {Bold = false, Size = "24"})},
                     TextProperties = new WordTextProperties
                     {
                         Size = "24",
@@ -33,6 +34,7 @@ WordTextProperties { Bold = true, Size = "24", }) },
                     }
                 });
             }
+
             SaveWord(info);
         }
 
@@ -41,12 +43,16 @@ WordTextProperties { Bold = true, Size = "24", }) },
         /// </summary>
         /// <param name="info"></param>
         protected abstract void CreateWord(WordInfo info);
+
         /// <summary>
         /// Создание абзаца с текстом
         /// </summary>
         /// <param name="paragraph"></param>
-        /// <returns></returns>
+        /// <returns></returns> 
+
+
         protected abstract void CreateParagraph(WordParagraph paragraph);
+
         /// <summary>
         /// Сохранение файла
         /// </summary>

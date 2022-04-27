@@ -10,7 +10,7 @@ namespace AbstractShipyardDatabaseImplement
         {
             if (optionsBuilder.IsConfigured == false)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=Idris\SQLEXPRESS;Initial Catalog=AbstractShipyardDatabase1;Integrated Security=True;MultipleActiveResultSets=True;");
+                optionsBuilder.UseSqlServer(@"Data Source=is-431-13\SQLEXPRESS;Initial Catalog=AbstractShipyardDatabase1;Integrated Security=True;MultipleActiveResultSets=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }
