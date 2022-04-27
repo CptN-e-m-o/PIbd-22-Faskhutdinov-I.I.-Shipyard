@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.Collections.Generic;
+using AbstractShipyardContracts.Enums;
 
 namespace AbstractShipyardContracts.ViewModels
 {
@@ -18,7 +19,7 @@ namespace AbstractShipyardContracts.ViewModels
         [DisplayName("Сумма")]
         public decimal Sum { get; set; }
         [DisplayName("Статус")]
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
         [DisplayName("Дата создания")]
         public DateTime DateCreate { get; set; }
         [DisplayName("Дата выполнения")]

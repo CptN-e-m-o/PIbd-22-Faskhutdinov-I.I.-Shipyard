@@ -8,11 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.16" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AbstractShipyardBusinessLogic\AbstractShipyardBusinessLogic.csproj" />
+    <ProjectReference Include="..\AbstractShipyardContracts\AbstractShipyardContracts.csproj" />
+    <ProjectReference Include="..\AbstractShipyardDatabaseImplement\AbstractShipyardDatabaseImplement.csproj" />
     <ProjectReference Include="..\AbstractShipyardFileImplement\AbstractShipyardFileImplement.csproj" />
     <ProjectReference Include="..\AbstractShipyardListImplement\AbstractShipyardListImplement.csproj" />
   </ItemGroup>

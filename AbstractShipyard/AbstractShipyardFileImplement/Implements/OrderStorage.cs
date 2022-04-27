@@ -8,6 +8,7 @@ using AbstractShipyardContracts.StoragesContracts;
 using AbstractShipyardContracts.ViewModels;
 using AbstractShipyardFileImplement.Models;
 
+
 namespace AbstractShipyardFileImplement.Implements
 {
     public class OrderStorage : IOrderStorage
@@ -27,7 +28,10 @@ namespace AbstractShipyardFileImplement.Implements
             {
                 return null;
             }
-            return source.Orders.Where(rec => rec.ProductId == model.ProductId).Select(CreateModel).ToList();
+            return source.Orders
+            .Where(rec => rec.DateCreate == model.DateCreate)
+            .Select(CreateModel)
+            .ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {
@@ -82,10 +86,10 @@ namespace AbstractShipyardFileImplement.Implements
             {
                 Id = order.Id,
                 ProductId = order.ProductId,
-                ProductName = source.Products.FirstOrDefault(rec => rec.Id == order.ProductId)?.ProductName,
+                ProductName = source.Products.FirstOrDefault(rec => rec.Id == order.ProductId).ProductName,
                 Count = order.Count,
                 Sum = order.Sum,
-                Status = order.Status.ToString(),
+                Status = order.Status,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement
             };
