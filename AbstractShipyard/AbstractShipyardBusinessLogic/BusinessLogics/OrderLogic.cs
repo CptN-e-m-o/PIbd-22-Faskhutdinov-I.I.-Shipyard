@@ -47,7 +47,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if (order.Status != Enum.GetName(typeof(OrderStatus), 0))
+            if (order.Status != OrderStatus.Принят)
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
@@ -70,7 +70,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if (order.Status != Enum.GetName(typeof(OrderStatus), 1))
+            if ((order.Status != OrderStatus.Выполняется))
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
@@ -93,7 +93,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if (order.Status != Enum.GetName(typeof(OrderStatus), 2))
+            if (order.Status != OrderStatus.Готов)
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }
