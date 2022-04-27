@@ -10,18 +10,20 @@ using System.Windows.Forms;
 using AbstractShipyardContracts.BindingModels;
 using AbstractShipyardContracts.BusinessLogicsContracts;
 using Unity;
-
+using Microsoft.Reporting.WinForms;
 
 namespace AbstractShipyardView
 {
     public partial class FormMain : Form
     {
         private readonly IOrderLogic _orderLogic;
+        private readonly IReportLogic _reportLogic;
 
-        public FormMain(IOrderLogic orderLogic)
+        public FormMain(IOrderLogic orderLogic, IReportLogic reportLogic)
         {
             InitializeComponent();
             _orderLogic = orderLogic;
+            _reportLogic = reportLogic;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -132,6 +134,32 @@ namespace AbstractShipyardView
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void списокКомпонентовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveComponentsToWordFile(new ReportBindingModel
+                {
+                    FileName = dialog.FileName
+                });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            }
+        }
+
+        private void компонентыПоИзделиямToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Program.Container.Resolve<FormReportProductComponents>();
+            form.ShowDialog();
+        }
+
+        private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Program.Container.Resolve<FormReportOrders>();
+            form.ShowDialog();
         }
     }
 }

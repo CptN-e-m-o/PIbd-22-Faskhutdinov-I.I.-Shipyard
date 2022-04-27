@@ -16,6 +16,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
         {
             _orderStorage = orderStorage;
         }
+
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             if (model == null)
@@ -40,6 +41,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 DateCreate = DateTime.Now
             });
         }
+
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
             var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -47,7 +49,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if (order.Status != OrderStatus.Принят)
+            if (order.Status != Enum.GetName(typeof(OrderStatus), 0))
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
@@ -70,7 +72,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if ((order.Status != OrderStatus.Выполняется))
+            if (order.Status != Enum.GetName(typeof(OrderStatus), 1))
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
@@ -93,7 +95,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не найден");
             }
-            if (order.Status != OrderStatus.Готов)
+            if (order.Status != Enum.GetName(typeof(OrderStatus), 2))
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }

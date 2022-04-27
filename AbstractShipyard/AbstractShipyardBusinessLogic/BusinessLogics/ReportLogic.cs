@@ -16,16 +16,16 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
         private readonly IComponentStorage _componentStorage;
         private readonly IProductStorage _productStorage;
         private readonly IOrderStorage _orderStorage;
+
         private readonly AbstractSaveToExcel _saveToExcel;
         private readonly AbstractSaveToWord _saveToWord;
         private readonly AbstractSaveToPdf _saveToPdf;
-        public ReportLogic(IProductStorage productStorage, IComponentStorage
-       componentStorage, IOrderStorage orderStorage,
-        AbstractSaveToExcel saveToExcel, AbstractSaveToWord saveToWord,
-       AbstractSaveToPdf saveToPdf)
+
+        public ReportLogic(IProductStorage travelStorage, IComponentStorage conditionStorage, IOrderStorage orderStorage,
+            AbstractSaveToExcel saveToExcel, AbstractSaveToWord saveToWord, AbstractSaveToPdf saveToPdf)
         {
-            _productStorage = productStorage;
-            _componentStorage = componentStorage;
+            _productStorage = travelStorage;
+            _componentStorage = conditionStorage;
             _orderStorage = orderStorage;
             _saveToExcel = saveToExcel;
             _saveToWord = saveToWord;
@@ -37,29 +37,32 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
         /// <returns></returns>
         public List<ReportProductComponentViewModel> GetProductComponent()
         {
-            var components = _componentStorage.GetFullList();
-            var products = _productStorage.GetFullList();
+            var ingredients = _componentStorage.GetFullList();
+
+            var pizzas = _productStorage.GetFullList();
+
             var list = new List<ReportProductComponentViewModel>();
-            foreach (var component in components)
+
+            foreach (var pizza in pizzas)
             {
                 var record = new ReportProductComponentViewModel
                 {
-                    ComponentName = component.ComponentName,
-                    Products = new List<Tuple<string, int>>(),
+                    ProductName = pizza.ProductName,
+                    Components = new List<Tuple<string, int>>(),
                     TotalCount = 0
                 };
-                foreach (var product in products)
+                foreach (var ingredient in ingredients)
                 {
-                    if (product.ProductComponents.ContainsKey(component.Id))
+                    if (pizza.ProductComponents.ContainsKey(ingredient.Id))
                     {
-                        record.Products.Add(new Tuple<string, int>(product.ProductName,
-                       product.ProductComponents[component.Id].Item2));
-                        record.TotalCount +=
-                       product.ProductComponents[component.Id].Item2;
+                        record.Components.Add(new Tuple<string, int>(ingredient.ComponentName, pizza.ProductComponents[ingredient.Id].Item2));
+                        record.TotalCount += pizza.ProductComponents[ingredient.Id].Item2;
                     }
                 }
+
                 list.Add(record);
             }
+
             return list;
         }
         /// <summary>
@@ -71,19 +74,18 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
         {
             return _orderStorage.GetFilteredList(new OrderBindingModel
             {
-                DateFrom =
-           model.DateFrom,
+                DateFrom = model.DateFrom,
                 DateTo = model.DateTo
             })
             .Select(x => new ReportOrdersViewModel
             {
                 DateCreate = x.DateCreate,
-                ProductName = x.ProductName,
+                OrderName = x.ProductName,
                 Count = x.Count,
                 Sum = x.Sum,
-                Status = x.Status.ToString()
+                Status = x.Status
             })
-           .ToList();
+            .ToList();
         }
         /// <summary>
         /// Сохранение компонент в файл-Word
@@ -95,7 +97,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 FileName = model.FileName,
                 Title = "Список компонент",
-                Components = _componentStorage.GetFullList()
+                Products = _productStorage.GetFullList()
             });
         }
         /// <summary>

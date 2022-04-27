@@ -11,10 +11,12 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
     public class ComponentLogic : IComponentLogic
     {
         private readonly IComponentStorage _componentStorage;
+
         public ComponentLogic(IComponentStorage componentStorage)
         {
             _componentStorage = componentStorage;
         }
+
         public List<ComponentViewModel> Read(ComponentBindingModel model)
         {
             if (model == null)
@@ -23,11 +25,11 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             }
             if (model.Id.HasValue)
             {
-                return new List<ComponentViewModel> { _componentStorage.GetElement(model)
-};
+                return new List<ComponentViewModel> { _componentStorage.GetElement(model) };
             }
             return _componentStorage.GetFilteredList(model);
         }
+
         public void CreateOrUpdate(ComponentBindingModel model)
         {
             var element = _componentStorage.GetElement(new ComponentBindingModel
@@ -36,7 +38,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             });
             if (element != null && element.Id != model.Id)
             {
-                throw new Exception("Уже есть компонент с таким названием");
+                throw new Exception("Уже есть условие с таким названием");
             }
             if (model.Id.HasValue)
             {
@@ -47,16 +49,16 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 _componentStorage.Insert(model);
             }
         }
+
         public void Delete(ComponentBindingModel model)
         {
             var element = _componentStorage.GetElement(new ComponentBindingModel
             {
-                Id =
-           model.Id
+                Id = model.Id
             });
             if (element == null)
             {
-                throw new Exception("Элемент не найден");
+                throw new Exception("Условие не найдено");
             }
             _componentStorage.Delete(model);
         }

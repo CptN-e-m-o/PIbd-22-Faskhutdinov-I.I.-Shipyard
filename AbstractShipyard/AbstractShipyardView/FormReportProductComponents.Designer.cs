@@ -22,6 +22,7 @@
 
         #region Windows Form Designer generated code
 
+
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -41,9 +42,10 @@
             this.buttonSaveToExcel.Location = new System.Drawing.Point(12, 12);
             this.buttonSaveToExcel.Name = "buttonSaveToExcel";
             this.buttonSaveToExcel.Size = new System.Drawing.Size(145, 23);
-            this.buttonSaveToExcel.TabIndex = 1;
+            this.buttonSaveToExcel.TabIndex = 0;
             this.buttonSaveToExcel.Text = "Сохранить в Excel";
             this.buttonSaveToExcel.UseVisualStyleBackColor = true;
+            this.buttonSaveToExcel.Click += new System.EventHandler(this.buttonSaveToExcel_Click);
             // 
             // dataGridView
             // 
@@ -55,19 +57,19 @@
             this.dataGridView.Location = new System.Drawing.Point(12, 41);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowTemplate.Height = 25;
-            this.dataGridView.Size = new System.Drawing.Size(776, 397);
-            this.dataGridView.TabIndex = 2;
+            this.dataGridView.Size = new System.Drawing.Size(642, 397);
+            this.dataGridView.TabIndex = 1;
             // 
             // Column1
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column1.HeaderText = "Компонент";
+            this.Column1.HeaderText = "Корабль";
             this.Column1.Name = "Column1";
             // 
             // Column2
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Изделие";
+            this.Column2.HeaderText = "Компонент";
             this.Column2.Name = "Column2";
             // 
             // Column3
@@ -80,11 +82,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(666, 450);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.buttonSaveToExcel);
             this.Name = "FormReportProductComponents";
-            this.Text = "FormReportOrder";
+            this.Text = "Корабли с компонентами";
+            this.Load += new System.EventHandler(this.FormReportTravelConditions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 

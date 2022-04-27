@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
+# Visual Studio Version 22
+VisualStudioVersion = 17.1.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractShipyardView", "AbstractShipyardView\AbstractShipyardView.csproj", "{3BC66222-553F-44AE-B531-D30A3EB40E91}"
 EndProject
