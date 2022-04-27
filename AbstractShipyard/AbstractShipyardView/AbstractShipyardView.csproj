@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AbstractShipyardBusinessLogic\AbstractShipyardBusinessLogic.csproj" />
+    <ProjectReference Include="..\AbstractShipyardFileImplement\AbstractShipyardFileImplement.csproj" />
     <ProjectReference Include="..\AbstractShipyardListImplement\AbstractShipyardListImplement.csproj" />
   </ItemGroup>
 

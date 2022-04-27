@@ -1,7 +1,8 @@
 using AbstractShipyardBusinessLogic.BusinessLogics;
 using AbstractShipyardContracts.BusinessLogicsContracts;
 using AbstractShipyardContracts.StoragesContracts;
-using AbstractShipyardListImplement.Implements;
+using AbstractShipyardFileImplement.Implements;
+using AbstractShipyardFileImplement;
 using System;
 using System.Windows.Forms;
 using Unity;
@@ -33,6 +34,7 @@ namespace AbstractShipyardView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(Container.Resolve<FormMain>());
+            FileDataListSingleton.Save();
         }
         private static IUnityContainer BuildUnityContainer()
         {

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractShipyardView", "AbstractShipyardView\AbstractShipyardView.csproj", "{3BC66222-553F-44AE-B531-D30A3EB40E91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractShipyardView", "AbstractShipyardView\AbstractShipyardView.csproj", "{3BC66222-553F-44AE-B531-D30A3EB40E91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractShipyardContracts", "AbstractShipyardContracts\AbstractShipyardContracts.csproj", "{BA3D1E85-37CD-49DE-9860-23EEDE38D988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractShipyardContracts", "AbstractShipyardContracts\AbstractShipyardContracts.csproj", "{BA3D1E85-37CD-49DE-9860-23EEDE38D988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractShipyardListImplement", "AbstractShipyardListImplement\AbstractShipyardListImplement.csproj", "{E4CF53EA-FAE0-48AA-AC00-2DFA09B4E88A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractShipyardListImplement", "AbstractShipyardListImplement\AbstractShipyardListImplement.csproj", "{E4CF53EA-FAE0-48AA-AC00-2DFA09B4E88A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractShipyardBusinessLogic", "AbstractShipyardBusinessLogic\AbstractShipyardBusinessLogic.csproj", "{050E5477-1CE0-41A6-880E-6BD7C9C2763B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractShipyardBusinessLogic", "AbstractShipyardBusinessLogic\AbstractShipyardBusinessLogic.csproj", "{050E5477-1CE0-41A6-880E-6BD7C9C2763B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractShipyardFileImplement", "AbstractShipyardFileImplement\AbstractShipyardFileImplement.csproj", "{ED8C30EC-E7C1-42C1-8020-783FF8D38AC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{050E5477-1CE0-41A6-880E-6BD7C9C2763B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{050E5477-1CE0-41A6-880E-6BD7C9C2763B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{050E5477-1CE0-41A6-880E-6BD7C9C2763B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8C30EC-E7C1-42C1-8020-783FF8D38AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8C30EC-E7C1-42C1-8020-783FF8D38AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8C30EC-E7C1-42C1-8020-783FF8D38AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8C30EC-E7C1-42C1-8020-783FF8D38AC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
