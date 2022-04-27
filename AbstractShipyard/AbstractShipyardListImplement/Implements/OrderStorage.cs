@@ -35,7 +35,7 @@ namespace AbstractShipyardListImplement.Implements
             var result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (order.ProductId == model.ProductId)
+                if (order.OrderId == model.ProductId)
                 {
                     result.Add(CreateModel(order));
                 }
@@ -100,7 +100,7 @@ namespace AbstractShipyardListImplement.Implements
         public static Order CreateModel(OrderBindingModel model,
             Order order)
         {
-            order.ProductId = model.ProductId;
+            order.OrderId = model.ProductId;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -113,7 +113,7 @@ namespace AbstractShipyardListImplement.Implements
             string productName = string.Empty;
             foreach (var product in source.Products)
             {
-                if (product.Id == order.ProductId)
+                if (product.Id == order.OrderId)
                 {
                     productName = product.ProductName;
                 }
@@ -121,7 +121,7 @@ namespace AbstractShipyardListImplement.Implements
             return new OrderViewModel
             {
                 Id = order.Id,
-                ProductId = order.ProductId,
+                ProductId = order.OrderId,
                 ProductName = productName,
                 Count = order.Count,
                 Sum = order.Sum,

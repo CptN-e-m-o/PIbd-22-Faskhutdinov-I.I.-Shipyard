@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AbstractShipyardContracts.Enums;
 
-namespace AbstractShipyardListImplement.Models
+namespace AbstractShipyardFileImplement.Models
 {
-    /// <summary>
     /// Заказ
-    /// </summary>
     public class Order
     {
         public int Id { get; set; }
-        public int OrderId { get; set; }
+        public int ProductId { get; set; }
         public int Count { get; set; }
         public decimal Sum { get; set; }
         public OrderStatus Status { get; set; }
