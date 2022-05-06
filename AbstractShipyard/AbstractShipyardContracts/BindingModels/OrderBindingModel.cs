@@ -20,6 +20,7 @@ namespace AbstractShipyardContracts.BindingModels
         public int ProductId { get; set; }
         [DataMember]
         public int? ClientId { get; set; }
+        public int? ImplementerId { get; set; }
         [DataMember]
         public int Count { get; set; }
         [DataMember]
@@ -34,6 +35,7 @@ namespace AbstractShipyardContracts.BindingModels
         public DateTime? DateFrom { get; set; }
         [DataMember]
         public DateTime? DateTo { get; set; }
+        public OrderStatus? SearchStatus { get; set; }
     }
 
 }
