@@ -35,7 +35,9 @@ namespace AbstractShipyardListImplement.Implements
             var result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (order.OrderId == model.ProductId)
+                if (order.Id == model.Id || (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                    order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
+                    || model.ClientId.HasValue && order.ClientId == model.ClientId.Value)
                 {
                     result.Add(CreateModel(order));
                 }
@@ -97,10 +99,10 @@ namespace AbstractShipyardListImplement.Implements
             }
             throw new Exception("Элемент не найден");
         }
-        public static Order CreateModel(OrderBindingModel model,
-            Order order)
+        private Order CreateModel(OrderBindingModel model, Order order)
         {
-            order.OrderId = model.ProductId;
+            order.ProductId = model.ProductId;
+            order.ClientId = model.ClientId.Value;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -108,21 +110,34 @@ namespace AbstractShipyardListImplement.Implements
             order.DateImplement = model.DateImplement;
             return order;
         }
-        public OrderViewModel CreateModel(Order order)
+
+        private OrderViewModel CreateModel(Order order)
         {
-            string productName = string.Empty;
-            foreach (var product in source.Products)
+            string ProductName = null;
+            for (int j = 0; j < source.Products.Count; ++j)
             {
-                if (product.Id == order.OrderId)
+                if (source.Products[j].Id == order.ProductId)
                 {
-                    productName = product.ProductName;
+                    ProductName = source.Products[j].ProductName;
+                    break;
+                }
+            }
+            string ClientFIO = null;
+            for (int j = 0; j < source.Clients.Count; ++j)
+            {
+                if (source.Clients[j].Id == order.ClientId)
+                {
+                    ClientFIO = source.Clients[j].ClientFIO;
+                    break;
                 }
             }
             return new OrderViewModel
             {
                 Id = order.Id,
-                ProductId = order.OrderId,
-                ProductName = productName,
+                ProductId = order.ProductId,
+                ClientId = order.ClientId,
+                ClientFIO = ClientFIO,
+                ProductName = ProductName,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status.ToString(),

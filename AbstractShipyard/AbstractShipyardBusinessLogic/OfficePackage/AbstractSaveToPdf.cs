@@ -33,7 +33,7 @@ namespace AbstractShipyardBusinessLogic.OfficePackage
                 CreateRow(new PdfRowParameters
                 {
                     Texts = new List<string> { order.DateCreate.ToShortDateString(),
-order.OrderName, order.Count.ToString(), order.Sum.ToString(), order.Status.ToString()
+order.ProductName, order.Count.ToString(), order.Sum.ToString(), order.Status.ToString()
 },
                     Style = "Normal",
                     ParagraphAlignment = PdfParagraphAlignmentType.Left

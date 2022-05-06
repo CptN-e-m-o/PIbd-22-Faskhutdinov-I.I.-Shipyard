@@ -37,32 +37,24 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
         /// <returns></returns>
         public List<ReportProductComponentViewModel> GetProductComponent()
         {
-            var ingredients = _componentStorage.GetFullList();
-
-            var pizzas = _productStorage.GetFullList();
-
+            var products = _productStorage.GetFullList();
             var list = new List<ReportProductComponentViewModel>();
 
-            foreach (var pizza in pizzas)
+            foreach (var product in products)
             {
                 var record = new ReportProductComponentViewModel
                 {
-                    ProductName = pizza.ProductName,
+                    ProductName = product.ProductName,
                     Components = new List<Tuple<string, int>>(),
                     TotalCount = 0
                 };
-                foreach (var ingredient in ingredients)
+                foreach (var condition in product.ProductComponents)
                 {
-                    if (pizza.ProductComponents.ContainsKey(ingredient.Id))
-                    {
-                        record.Components.Add(new Tuple<string, int>(ingredient.ComponentName, pizza.ProductComponents[ingredient.Id].Item2));
-                        record.TotalCount += pizza.ProductComponents[ingredient.Id].Item2;
-                    }
+                    record.Components.Add(new Tuple<string, int>(condition.Value.Item1, condition.Value.Item2));
+                    record.TotalCount += condition.Value.Item2;
                 }
-
                 list.Add(record);
             }
-
             return list;
         }
         /// <summary>
@@ -80,7 +72,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             .Select(x => new ReportOrdersViewModel
             {
                 DateCreate = x.DateCreate,
-                OrderName = x.ProductName,
+                ProductName = x.ProductName,
                 Count = x.Count,
                 Sum = x.Sum,
                 Status = x.Status
@@ -97,7 +89,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 FileName = model.FileName,
                 Title = "Список компонент",
-                Products = _productStorage.GetFullList()
+                Components = _componentStorage.GetFullList()
             });
         }
         /// <summary>
