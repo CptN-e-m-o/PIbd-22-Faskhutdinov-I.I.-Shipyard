@@ -37,7 +37,9 @@ namespace AbstractShipyardListImplement.Implements
             {
                 if (order.Id == model.Id || (model.DateFrom.HasValue && model.DateTo.HasValue &&
                     order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
-                    || model.ClientId.HasValue && order.ClientId == model.ClientId.Value)
+                    || (model.ClientId.HasValue && order.ClientId == model.ClientId.Value)
+                    || (model.SearchStatus.HasValue && model.SearchStatus.Value == order.Status)
+                    || (model.ImplementerId.HasValue && order.ImplementerId == model.ImplementerId && model.Status == order.Status))
                 {
                     result.Add(CreateModel(order));
                 }
@@ -103,6 +105,7 @@ namespace AbstractShipyardListImplement.Implements
         {
             order.ProductId = model.ProductId;
             order.ClientId = model.ClientId.Value;
+            order.ImplementerId = model.ImplementerId;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -131,12 +134,23 @@ namespace AbstractShipyardListImplement.Implements
                     break;
                 }
             }
+            string ImplementerFIO = null;
+            for (int j = 0; j < source.Implementers.Count; ++j)
+            {
+                if (source.Implementers[j].Id == order.ImplementerId)
+                {
+                    ImplementerFIO = source.Implementers[j].ImplementerFIO;
+                    break;
+                }
+            }
             return new OrderViewModel
             {
                 Id = order.Id,
                 ProductId = order.ProductId,
                 ClientId = order.ClientId,
                 ClientFIO = ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = ImplementerFIO,
                 ProductName = ProductName,
                 Count = order.Count,
                 Sum = order.Sum,

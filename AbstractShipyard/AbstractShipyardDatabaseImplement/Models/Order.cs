@@ -9,6 +9,7 @@ namespace AbstractShipyardDatabaseImplement.Models
 		public int Id { get; set; }
 		public int ProductId { get; set; }
 		public int ClientId { get; set; }
+		public int? ImplementerId { get; set; }
 
 		[Required]
 		public int Count { get; set; }
@@ -26,5 +27,6 @@ namespace AbstractShipyardDatabaseImplement.Models
 
 		public virtual Product Product { get; set; }
 		public virtual Client Client { get; set; }
+		public virtual Implementer Implementer { get; set; }
 	}
 }
