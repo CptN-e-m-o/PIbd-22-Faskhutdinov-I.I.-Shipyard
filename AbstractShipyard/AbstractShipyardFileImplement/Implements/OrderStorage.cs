@@ -29,7 +29,9 @@ namespace AbstractShipyardFileImplement.Implements
                 return null;
             }
             return source.Orders
-            .Where(rec => rec.DateCreate == model.DateCreate)
+            .Where(rec => rec.ProductId.Equals(model.ProductId) || (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                || model.ClientId.HasValue && rec.ClientId == model.ClientId.Value)
             .Select(CreateModel)
             .ToList();
         }
@@ -73,6 +75,7 @@ namespace AbstractShipyardFileImplement.Implements
             Order order)
         {
             order.ProductId = model.ProductId;
+            order.ClientId = model.ClientId.Value;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -86,6 +89,8 @@ namespace AbstractShipyardFileImplement.Implements
             {
                 Id = order.Id,
                 ProductId = order.ProductId,
+                ClientId = order.ClientId,
+                ClientFIO = source.Clients.FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
                 ProductName = source.Products.FirstOrDefault(rec => rec.Id == order.ProductId).ProductName,
                 Count = order.Count,
                 Sum = order.Sum,

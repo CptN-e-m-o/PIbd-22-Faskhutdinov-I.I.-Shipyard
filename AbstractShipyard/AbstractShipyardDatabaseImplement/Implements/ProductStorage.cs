@@ -14,6 +14,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
         public List<ProductViewModel> GetFullList()
         {
             using var context = new AbstractShipyardDatabase();
+
             return context.Products
             .Include(rec => rec.ProductComponents)
             .ThenInclude(rec => rec.Component)
@@ -39,6 +40,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
             .Select(CreateModel)
             .ToList();
         }
+
         public ProductViewModel GetElement(ProductBindingModel model)
         {
             if (model == null)
@@ -102,6 +104,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
                 throw;
             }
         }
+
         public void Delete(ProductBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();

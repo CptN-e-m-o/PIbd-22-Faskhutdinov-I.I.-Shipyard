@@ -9,7 +9,7 @@ namespace AbstractShipyardContracts.ViewModels
     public class ReportOrdersViewModel
     {
         public DateTime DateCreate { get; set; }
-        public string OrderName { get; set; }
+        public string ProductName { get; set; }
         public int Count { get; set; }
         public decimal Sum { get; set; }
         public string Status { get; set; }

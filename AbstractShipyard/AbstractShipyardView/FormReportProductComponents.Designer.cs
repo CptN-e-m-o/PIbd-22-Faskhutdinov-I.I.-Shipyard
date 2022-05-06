@@ -47,7 +47,7 @@
             this.buttonSaveToExcel.UseVisualStyleBackColor = true;
             this.buttonSaveToExcel.Click += new System.EventHandler(this.buttonSaveToExcel_Click);
             // 
-            // dataGridView
+            // dataGridViewTC
             // 
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -55,7 +55,7 @@
             this.Column2,
             this.Column3});
             this.dataGridView.Location = new System.Drawing.Point(12, 41);
-            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.Name = "dataGridViewTC";
             this.dataGridView.RowTemplate.Height = 25;
             this.dataGridView.Size = new System.Drawing.Size(642, 397);
             this.dataGridView.TabIndex = 1;
@@ -63,13 +63,13 @@
             // Column1
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column1.HeaderText = "Корабль";
+            this.Column1.HeaderText = "Путевка";
             this.Column1.Name = "Column1";
             // 
             // Column2
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Компонент";
+            this.Column2.HeaderText = "Условие";
             this.Column2.Name = "Column2";
             // 
             // Column3
@@ -78,15 +78,15 @@
             this.Column3.HeaderText = "Количество";
             this.Column3.Name = "Column3";
             // 
-            // FormReportProductComponents
+            // FormReportTravelConditions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(666, 450);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.buttonSaveToExcel);
-            this.Name = "FormReportProductComponents";
-            this.Text = "Корабли с компонентами";
+            this.Name = "FormReportTravelConditions";
+            this.Text = "Путевки с условиями";
             this.Load += new System.EventHandler(this.FormReportTravelConditions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);

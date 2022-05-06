@@ -18,11 +18,13 @@ namespace AbstractShipyardView
     {
         private readonly IProductLogic _logicP;
         private readonly IOrderLogic _logicO;
-        public FormCreateOrder(IProductLogic logicT, IOrderLogic logicO)
+        private readonly IClientLogic _logicC;
+        public FormCreateOrder(IProductLogic logicP, IOrderLogic logicO, IClientLogic logicC)
         {
             InitializeComponent();
-            _logicP = logicT;
+            _logicP = logicP;
             _logicO = logicO;
+            _logicC = logicC;
         }
 
         private void FormCreateOrder_Load(object sender, EventArgs e)
@@ -30,15 +32,23 @@ namespace AbstractShipyardView
             // прописать логику
             try
             {
-                var list = _logicP.Read(null);
-                if (list != null)
+                var listT = _logicP.Read(null);
+                foreach (var travel in listT)
                 {
-                    comboBoxTravel.DataSource = list;
-                    comboBoxTravel.DisplayMember = "ProductName";
-                    comboBoxTravel.ValueMember = "Id";
-                    comboBoxTravel.SelectedItem = null;
+                    comboBoxProduct.DataSource = listT;
+                    comboBoxProduct.DisplayMember = "ProductName";
+                    comboBoxProduct.ValueMember = "Id";
+                    comboBoxProduct.SelectedItem = null;
                 }
-                
+                var listC = _logicC.Read(null);
+                foreach (var client in listC)
+                {
+                    comboBoxClient.DataSource = listC;
+                    comboBoxClient.DisplayMember = "ClientFIO";
+                    comboBoxClient.ValueMember = "Id";
+                    comboBoxClient.SelectedItem = null;
+                }
+
             }
             catch (Exception ex)
             {
@@ -48,11 +58,11 @@ namespace AbstractShipyardView
 
         private void CalcSum()
         {
-            if (comboBoxTravel.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
+            if (comboBoxProduct.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
             {
                 try
                 {
-                    int id = Convert.ToInt32(comboBoxTravel.SelectedValue);
+                    int id = Convert.ToInt32(comboBoxProduct.SelectedValue);
                     ProductViewModel product = _logicP.Read(new ProductBindingModel { Id = id })?[0];
                     int count = Convert.ToInt32(textBoxCount.Text);
                     textBoxSum.Text = (count * product?.Price ?? 0).ToString();
@@ -81,16 +91,22 @@ namespace AbstractShipyardView
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (comboBoxTravel.SelectedValue == null)
+            if (comboBoxProduct.SelectedValue == null)
             {
                 MessageBox.Show("Выберите путевку", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (comboBoxClient.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
                 _logicO.CreateOrder(new CreateOrderBindingModel
                 {
-                    ProductId = Convert.ToInt32(comboBoxTravel.SelectedValue),
+                    ProductId = Convert.ToInt32(comboBoxProduct.SelectedValue),
+                    ClientId = Convert.ToInt32(comboBoxClient.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToDecimal(textBoxSum.Text)
                 });

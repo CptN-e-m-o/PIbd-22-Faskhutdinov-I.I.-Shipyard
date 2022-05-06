@@ -26,6 +26,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
             {
                 return null;
             }
+
             using var context = new AbstractShipyardDatabase();
             return context.Components
             .Where(rec => rec.ComponentName.Contains(model.ComponentName))
@@ -39,16 +40,21 @@ namespace AbstractShipyardDatabaseImplement.Implements
             {
                 return null;
             }
+
             using var context = new AbstractShipyardDatabase();
-            var component = context.Components.FirstOrDefault(rec => rec.ComponentName == model.ComponentName || rec.Id == model.Id);
+            var component = context.Components
+            .FirstOrDefault(rec => rec.ComponentName == model.ComponentName || rec.Id == model.Id);
+
             return component != null ? CreateModel(component) : null;
         }
+
         public void Insert(ComponentBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
             context.Components.Add(CreateModel(model, new Component()));
             context.SaveChanges();
         }
+
         public void Update(ComponentBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
@@ -60,11 +66,12 @@ namespace AbstractShipyardDatabaseImplement.Implements
             CreateModel(model, element);
             context.SaveChanges();
         }
+
         public void Delete(ComponentBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
-            Component element = context.Components.FirstOrDefault(rec => rec.Id ==
-           model.Id);
+            Component element = context.Components.FirstOrDefault(rec => rec.Id == model.Id);
+
             if (element != null)
             {
                 context.Components.Remove(element);
@@ -75,11 +82,9 @@ namespace AbstractShipyardDatabaseImplement.Implements
                 throw new Exception("Элемент не найден");
             }
         }
-        private static Component CreateModel(ComponentBindingModel model, Component
-component)
+        private static Component CreateModel(ComponentBindingModel model, Component component)
         {
             component.ComponentName = model.ComponentName;
-
             return component;
         }
 
