@@ -1,4 +1,6 @@
 using AbstractShipyardBusinessLogic.BusinessLogics;
+using AbstractShipyardBusinessLogic.MailWorker;
+using AbstractShipyardContracts.BindingModels;
 using AbstractShipyardContracts.BusinessLogicsContracts;
 using AbstractShipyardContracts.StoragesContracts;
 using AbstractShipyardDatabaseImplement.Implements;
@@ -8,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-
+using System;
 
 namespace AbstractShipyardRestApi
 {
@@ -18,44 +20,60 @@ namespace AbstractShipyardRestApi
         {
             Configuration = configuration;
         }
+
         public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<IProductStorage, ProductStorage>();
-            services.AddTransient<IOrderLogic, OrderLogic>();
+            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
+
             services.AddTransient<IClientLogic, ClientLogic>();
+            services.AddTransient<IOrderLogic, OrderLogic>();
             services.AddTransient<IProductLogic, ProductLogic>();
+            services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
+            services.AddSingleton<AbstractMailWorker, MailKitWorker>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title =
-                "AbstractShopRestApi",
-                    Version = "v1"
-                });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AbstractShipyardRestApi", Version = "v1" });
             });
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-                 {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AbstractShopRestApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PizzeriaRestApi v1"));
             }
+
             app.UseHttpsRedirection();
+
             app.UseRouting();
+
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var mailSender = app.ApplicationServices.GetService<AbstractMailWorker>();
+            mailSender.MailConfig(new MailConfigBindingModel
+            {
+                MailLogin = Configuration?.GetSection("MailLogin")?.Value.ToString(),
+                MailPassword = Configuration?.GetSection("MailPassword")?.Value.ToString(),
+                SmtpClientHost = Configuration?.GetSection("SmtpClientHost")?.Value.ToString(),
+                SmtpClientPort = Convert.ToInt32(Configuration?.GetSection("SmtpClientPort")?.Value.ToString()),
+                PopHost = Configuration?.GetSection("PopHost")?.Value.ToString(),
+                PopPort = Convert.ToInt32(Configuration?.GetSection("PopPort")?.Value.ToString())
             });
         }
     }

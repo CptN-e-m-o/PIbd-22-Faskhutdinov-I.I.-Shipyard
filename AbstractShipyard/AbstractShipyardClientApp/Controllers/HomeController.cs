@@ -139,5 +139,16 @@ HttpContext.TraceIdentifier
             ProductViewModel prod = APIClient.GetRequest<ProductViewModel>($"api/main/getproduct?productId={product}");
             return count * prod.Price;
         }
+
+
+        [HttpGet]
+        public IActionResult Messages()
+        {
+            if (Program.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+            return View(APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/GetClientsMessages?clientId={Program.Client.Id}"));
+        }
     }
 }

@@ -1,8 +1,9 @@
-﻿using AbstractShipyardContracts.BindingModels;
-using AbstractShipyardContracts.BusinessLogicsContracts;
-using AbstractShipyardContracts.StoragesContracts;
-using AbstractShipyardContracts.ViewModels;
+﻿using AbstractShipyardContracts.BusinessLogicsContracts;
+using AbstractShipyardContracts.BindingModels;
 using AbstractShipyardContracts.Enums;
+using AbstractShipyardContracts.ViewModels;
+using AbstractShipyardContracts.StoragesContracts;
+using AbstractShipyardBusinessLogic.MailWorker;
 using System;
 using System.Collections.Generic;
 
@@ -11,10 +12,14 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
     public class OrderLogic : IOrderLogic
     {
         private readonly IOrderStorage _orderStorage;
+        private readonly IClientStorage _clientStorage;
+        private readonly AbstractMailWorker _mailWorker;
 
-        public OrderLogic(IOrderStorage orderStorage)
+        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage, AbstractMailWorker mailWorker)
         {
             _orderStorage = orderStorage;
+            _clientStorage = clientStorage;
+            _mailWorker = mailWorker;
         }
 
         public List<OrderViewModel> Read(OrderBindingModel model)
@@ -27,6 +32,7 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
             {
                 return new List<OrderViewModel> { _orderStorage.GetElement(model) };
             }
+
             return _orderStorage.GetFilteredList(model);
         }
 
@@ -38,22 +44,31 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 ClientId = model.ClientId,
                 Count = model.Count,
                 Sum = model.Sum,
-                Status = OrderStatus.Принят,
-                DateCreate = DateTime.Now
+                DateCreate = DateTime.Now,
+                Status = OrderStatus.Принят
+            });
+
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = model.ClientId })?.Login,
+                Subject = "Ваш заказ создан",
+                Text = $"Заказ от {DateTime.Now} на сумму {model.Sum} был создан"
             });
         }
-
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
             var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
+
             if (order == null)
             {
-                throw new Exception("Заказ не найден");
+                throw new Exception("Не найден заказ");
             }
-            if (order.Status != Enum.GetName(typeof(OrderStatus), 0))
+
+            if (order.Status != OrderStatus.Принят.ToString())
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
+
             _orderStorage.Update(new OrderBindingModel
             {
                 Id = order.Id,
@@ -65,6 +80,12 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 DateCreate = order.DateCreate,
                 DateImplement = DateTime.Now,
                 Status = OrderStatus.Выполняется
+            });
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Статус заказа № {order.Id} обновлен",
+                Text = $"Заказ № {order.Id} передан в работу"
             });
         }
 
@@ -92,6 +113,13 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Готов
             });
+
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Статус заказа № {order.Id} обновлен",
+                Text = $"Заказ № {order.Id} готов"
+            });
         }
 
         public void DeliveryOrder(ChangeStatusBindingModel model)
@@ -116,6 +144,13 @@ namespace AbstractShipyardBusinessLogic.BusinessLogics
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Выдан
+            });
+
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Статус заказа № {order.Id} обновлен",
+                Text = $"Заказ № {order.Id} выдан"
             });
         }
     }
