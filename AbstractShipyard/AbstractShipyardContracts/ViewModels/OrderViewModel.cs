@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using AbstractShipyardContracts.Enums;
 using System.Runtime.Serialization;
+using AbstractShipyardContracts.Attributes;
 
 namespace AbstractShipyardContracts.ViewModels
 {
@@ -11,6 +12,7 @@ namespace AbstractShipyardContracts.ViewModels
     /// </summary> 
     public class OrderViewModel
     {
+        [Column(title: "Номер", width: 100)]
         public int Id { get; set; }
 
         public int ClientId { get; set; }
@@ -19,28 +21,29 @@ namespace AbstractShipyardContracts.ViewModels
 
         public int ProductId { get; set; }
 
-        [DisplayName("ФИО клиента")]
+
+        [Column(title: "Клиент", width: 150)]
         public string ClientFIO { get; set; }
 
-        [DisplayName("Исполнитель")]
+        [Column(title: "Исполнитель", width: 150)]
+        [DataMember]
         public string ImplementerFIO { get; set; }
 
-        [DisplayName("Пицца")]
+        [Column(title: "Продукт", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string ProductName { get; set; }
-
-        [DisplayName("Количество")]
+        [Column(title: "Количество", width: 100)]
         public int Count { get; set; }
 
-        [DisplayName("Сумма")]
+        [Column(title: "Сумма", width: 50)]
         public decimal Sum { get; set; }
 
-        [DisplayName("Статус")]
+        [Column(title: "Статус", width: 100)]
         public string Status { get; set; }
 
-        [DisplayName("Дата создания")]
+        [Column(title: "Дата создания", width: 100)]
         public DateTime DateCreate { get; set; }
 
-        [DisplayName("Дата выполнения")]
+        [Column(title: "Дата выполнения", width: 100)]
         public DateTime? DateImplement { get; set; }
     }
 }

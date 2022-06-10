@@ -41,14 +41,14 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 29;
-            this.dataGridView.Size = new System.Drawing.Size(528, 277);
+            this.dataGridView.Size = new System.Drawing.Size(795, 426);
             this.dataGridView.TabIndex = 0;
             // 
             // FormMessagesInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(555, 298);
+            this.ClientSize = new System.Drawing.Size(819, 450);
             this.Controls.Add(this.dataGridView);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMessagesInfo";

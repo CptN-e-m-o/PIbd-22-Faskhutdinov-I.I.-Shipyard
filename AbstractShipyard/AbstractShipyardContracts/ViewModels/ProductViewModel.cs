@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-
+using AbstractShipyardContracts.Attributes;
 
 namespace AbstractShipyardContracts.ViewModels
 {
@@ -11,18 +11,16 @@ namespace AbstractShipyardContracts.ViewModels
     [DataContract]
     public class ProductViewModel
     {
-        [DataMember]
+        [Column(title: "Номер", width: 100)]
         public int Id { get; set; }
 
-        [DataMember]
-        [DisplayName("Название изделия")]
+        [Column(title: "Название продукта", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string ProductName { get; set; }
 
-        [DataMember]
-        [DisplayName("Цена")]
+
+        [Column(title: "Цена", gridViewAutoSize: GridViewAutoSize.Fill)]
         public decimal Price { get; set; }
 
-        [DataMember]
         public Dictionary<int, (string, int)> ProductComponents { get; set; }
     }
 }

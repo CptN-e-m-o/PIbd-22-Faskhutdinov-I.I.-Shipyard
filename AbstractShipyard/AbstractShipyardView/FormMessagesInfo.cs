@@ -22,13 +22,7 @@ namespace AbstractShipyardView
 
         private void FormMessages_Load(object sender, EventArgs e)
         {
-            var list = _logic.Read(null);
-            if (list != null)
-            {
-                dataGridView.DataSource = list;
-                dataGridView.Columns[0].Visible = false;
-                dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
+            Program.ConfigGrid(_logic.Read(null), dataGridView);
         }
     }
 }

@@ -21,9 +21,10 @@ namespace AbstractShipyardView
         private readonly IClientLogic _clientLogic;
         private readonly IImplementerLogic _implementerLogic;
         private readonly IWorkProcess _workProcess;
+        private readonly IBackUpLogic _backUpLogic;
 
         public FormMain(IOrderLogic orderLogic, IReportLogic reportLogic,
-          IClientLogic clientLogic, IImplementerLogic implementerLogic, IWorkProcess workProcess)
+          IClientLogic clientLogic, IImplementerLogic implementerLogic, IWorkProcess workProcess, IBackUpLogic backUpLogic)
         {
             InitializeComponent();
             _orderLogic = orderLogic;
@@ -31,6 +32,7 @@ namespace AbstractShipyardView
             _clientLogic = clientLogic;
             _implementerLogic = implementerLogic;
             _workProcess = workProcess;
+            _backUpLogic = backUpLogic;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -42,18 +44,7 @@ namespace AbstractShipyardView
         {
             try
             {
-                var list = _orderLogic.Read(null);
-                // прописать логику
-                if (list != null)
-                {
-                    dataGridViewOrders.DataSource = list;
-                    dataGridViewOrders.Columns[0].Visible = false;
-                    dataGridViewOrders.Columns[1].Visible = false;
-                    dataGridViewOrders.Columns[2].Visible = false;
-                    dataGridViewOrders.Columns[3].Visible = false;
-                    dataGridViewOrders.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-                }
+                Program.ConfigGrid(_orderLogic.Read(null), dataGridViewOrders);
             }
             catch (Exception ex)
             {
@@ -152,6 +143,25 @@ namespace AbstractShipyardView
         {
             var form = Program.Container.Resolve<FormMessagesInfo>();
             form.ShowDialog();
+        }
+        private void создатьБэкапToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_backUpLogic != null)
+                {
+                    var fbd = new FolderBrowserDialog();
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        _backUpLogic.CreateBackUp(new BackUpSaveBinidngModel { FolderName = fbd.SelectedPath });
+                        MessageBox.Show("Бэкап создан", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

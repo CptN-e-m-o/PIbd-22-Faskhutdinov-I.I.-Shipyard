@@ -33,13 +33,7 @@ namespace AbstractShipyardView
         {
             try
             {
-                var list = _logic.Read(null);
-                if (list != null)
-                {
-                    dataGridViewConditions.DataSource = list;
-                    dataGridViewConditions.Columns[0].Visible = false;
-                    dataGridViewConditions.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                Program.ConfigGrid(_logic.Read(null), dataGridViewConditions);
             }
             catch (Exception ex)
             {
