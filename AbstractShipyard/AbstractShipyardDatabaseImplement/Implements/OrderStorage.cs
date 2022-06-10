@@ -17,20 +17,13 @@ namespace AbstractShipyardDatabaseImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             using var context = new AbstractShipyardDatabase();
-
-            return context.Orders.Include(rec => rec.Product).Include(rec => rec.Client).Select(rec => new OrderViewModel
-            {
-                Id = rec.Id,
-                ProductId = rec.ProductId,
-                ClientId = rec.ClientId,
-                ClientFIO = rec.Client.ClientFIO,
-                ProductName = rec.Product.ProductName,
-                Count = rec.Count,
-                Sum = rec.Sum,
-                Status = rec.Status.ToString(),
-                DateCreate = rec.DateCreate,
-                DateImplement = rec.DateImplement
-            }).ToList();
+            return context.Orders
+                .Include(rec => rec.Product)
+                .Include(rec => rec.Client)
+                .Include(rec => rec.Implementer)
+                .ToList()
+                .Select(CreateModel)
+                .ToList();
         }
 
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
@@ -39,66 +32,77 @@ namespace AbstractShipyardDatabaseImplement.Implements
             {
                 return null;
             }
-
             using var context = new AbstractShipyardDatabase();
-
-            return context.Orders.Include(rec => rec.Product).Include(rec => rec.Client)
-                .Where(rec => rec.ProductId == model.ProductId ||
-                (model.DateFrom.HasValue && model.DateTo.HasValue &&
-                rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo) ||
-                model.ClientId.HasValue && rec.ClientId == model.ClientId).Select(rec => new OrderViewModel
-                {
-                    Id = rec.Id,
-                    ProductId = rec.ProductId,
-                    ClientId = rec.ClientId,
-                    ClientFIO = rec.Client.ClientFIO,
-                    ProductName = rec.Product.ProductName,
-                    Count = rec.Count,
-                    Sum = rec.Sum,
-                    Status = rec.Status.ToString(),
-                    DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement
-                }).ToList();
+            return context.Orders
+                .Include(rec => rec.Product)
+                .Include(rec => rec.Client)
+                .Include(rec => rec.Implementer)
+                .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
+                (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
+                (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+                (model.SearchStatus.HasValue && model.SearchStatus.Value == rec.Status) ||
+                (model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId && model.Status == rec.Status))
+                .ToList()
+                .Select(CreateModel)
+                .ToList();
         }
-
         public OrderViewModel GetElement(OrderBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
-
             using var context = new AbstractShipyardDatabase();
-
-            var order = context.Orders.Include(rec => rec.Product).Include(rec => rec.Client).FirstOrDefault(rec => rec.Id == model.Id);
-
-            return order != null ? CreateModel(order, context) : null;
+            var order = context.Orders
+                .Include(rec => rec.Product)
+                .Include(rec => rec.Client)
+                .Include(rec => rec.Implementer)
+                .FirstOrDefault(rec => rec.Id == model.Id);
+            return order != null ? CreateModel(order) : null;
         }
 
         public void Insert(OrderBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
-            context.Orders.Add(CreateModel(model, new Order()));
-            context.SaveChanges();
+            using var transaction = context.Database.BeginTransaction();
+            try
+            {
+                context.Orders.Add(CreateModel(model, new Order()));
+                context.SaveChanges();
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public void Update(OrderBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
-            var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-            if (element == null)
+            using var transaction = context.Database.BeginTransaction();
+            try
             {
-                throw new Exception("Элемент не найден");
+                var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+                if (element == null)
+                {
+                    throw new Exception("Элемент не найден");
+                }
+                CreateModel(model, element);
+                context.SaveChanges();
+                transaction.Commit();
             }
-            CreateModel(model, element);
-            context.SaveChanges();
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
-
         public void Delete(OrderBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
             Order element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-
             if (element != null)
             {
                 context.Orders.Remove(element);
@@ -110,26 +114,30 @@ namespace AbstractShipyardDatabaseImplement.Implements
             }
         }
 
-        private static Order CreateModel(OrderBindingModel model, Order order)
+        private Order CreateModel(OrderBindingModel model, Order order)
         {
-            order.ProductId = model.ProductId;
             order.ClientId = (int)model.ClientId;
-            order.Count = model.Count;
+            order.ImplementerId = model.ImplementerId;
+            order.ProductId = model.ProductId;
             order.Sum = model.Sum;
+            order.Count = model.Count;
             order.Status = model.Status;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+
             return order;
         }
 
-        private static OrderViewModel CreateModel(Order order, AbstractShipyardDatabase context)
+        public OrderViewModel CreateModel(Order order)
         {
             return new OrderViewModel
             {
                 Id = order.Id,
+                ClientId = order.ClientId,
+                ClientFIO = order.Client.ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerId.HasValue ? order.Implementer.ImplementerFIO : string.Empty,
                 ProductId = order.ProductId,
-                //ClientId = order.ClientId,
-                //ClientFIO = order.Client.ClientFIO,
                 ProductName = order.Product.ProductName,
                 Count = order.Count,
                 Sum = order.Sum,
