@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using AbstractShipyardContracts.Attributes;
 
 namespace AbstractShipyardContracts.ViewModels
 {
@@ -7,8 +10,10 @@ namespace AbstractShipyardContracts.ViewModels
     /// </summary>
     public class ComponentViewModel
     {
+        [Column(title: "Номер", width: 100)]
         public int Id { get; set; }
-        [DisplayName("Название компонента")]
+
+        [Column(title: "Название ингредиента", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string ComponentName { get; set; }
     }
 }

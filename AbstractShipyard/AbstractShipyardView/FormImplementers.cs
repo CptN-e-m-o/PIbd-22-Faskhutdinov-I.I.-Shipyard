@@ -32,15 +32,7 @@ namespace AbstractShipyardView
         {
             try
             {
-                var list = _logic.Read(null);
-                if (list != null)
-                {
-                    dataGridViewI.DataSource = list;
-                    dataGridViewI.Columns[0].Visible = false;
-                    dataGridViewI.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridViewI.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridViewI.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                Program.ConfigGrid(_logic.Read(null), dataGridViewI);
             }
             catch (Exception ex)
             {

@@ -26,6 +26,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
             })
             .ToList();
         }
+
         public List<MessageInfoViewModel> GetFilteredList(MessageInfoBindingModel model)
         {
             if (model == null)
@@ -33,11 +34,9 @@ namespace AbstractShipyardDatabaseImplement.Implements
                 return null;
             }
             using var context = new AbstractShipyardDatabase();
-            return context.Messages
-            .Where(rec => (model.ClientId.HasValue && rec.ClientId ==
-            model.ClientId) ||
-            (!model.ClientId.HasValue &&
-            rec.DateDelivery.Date == model.DateDelivery.Date))
+
+            return context.Messages.Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId)
+            || (!model.ClientId.HasValue && rec.DateDelivery.Date == model.DateDelivery.Date))
             .Select(rec => new MessageInfoViewModel
             {
                 MessageId = rec.MessageId,
@@ -48,6 +47,7 @@ namespace AbstractShipyardDatabaseImplement.Implements
             })
             .ToList();
         }
+
         public void Insert(MessageInfoBindingModel model)
         {
             using var context = new AbstractShipyardDatabase();
